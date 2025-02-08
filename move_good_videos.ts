@@ -1,9 +1,7 @@
+import { isShuffleEnabled, getCurrentMedia, decodeUri, moveFile, advancePlaylist, removeMostRecentlyPlayedPlaylistItem, log, lastPlayedItemId, recentlyPlayedIds, deleteFile } from "./function_list.ts";
+import { shouldDelete, shouldMove } from "./config.ts";
 
-import { isShuffleEnabled, getCurrentMedia, decodeUri, moveFile, advancePlaylist, removeMostRecentlyPlayedPlaylistItem, log, lastPlayedItemId, recentlyPlayedIds } from "./function_list.ts";
-
-
-main();
-
+main()
 // Main function
 async function main() {
   try {
@@ -33,15 +31,21 @@ async function main() {
     const filePath = decodeUri(mediaUri.replace("file://", ""));
     log(`Decoded media path: ${filePath}`);
 
-    // Only proceed with playlist operations if file move was successful
+    // Only proceed with playlist operations if file operation was successful
     try {
-
       // First advance to the next item
       await advancePlaylist();
 
-      // Move the file
-      await moveFile(filePath);
-      
+      // Perform the selected operation
+      if (shouldDelete) {
+        await deleteFile(filePath);
+      } else if (shouldMove) {
+        await moveFile(filePath);
+      } else {
+        log("No operation selected. Exiting.");
+        Deno.exit(1);
+      }
+
       // Then remove the previous item after we've successfully advanced
       await removeMostRecentlyPlayedPlaylistItem();
 

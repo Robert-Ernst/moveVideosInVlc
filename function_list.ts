@@ -98,6 +98,21 @@ export function log(message: string): void {
     }
   }
   
+  // Function to delete file
+  export async function deleteFile(filePath: string): Promise<void> {
+    log(`Deleting file: ${filePath}`);
+    try {
+      await Deno.remove(filePath);
+      log(`File deleted: ${filePath}`);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        log(`Error deleting file: ${error.message}`);
+      } else {
+        log(`Unknown error deleting file: ${String(error)}`);
+      }
+    }
+  }
+  
   // Function to advance to next playlist item
   export async function advancePlaylist(): Promise<void> {
     log("Advancing to the next item in the playlist...");

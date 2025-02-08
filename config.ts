@@ -31,6 +31,31 @@ export interface VlcStatus {
   // other fields exist but we don't need them
 }
 
+// Parse command line arguments
+const args = Deno.args;
+let shouldDelete = false;
+let shouldMove = false;
+
+// Process arguments
+for (const arg of args) {
+  if (arg === "-d" || arg === "--delete") {
+    shouldDelete = true;
+  } else if (arg === "-m" || arg === "--move") {
+    shouldMove = true;
+  }
+}
+
+// Validate arguments
+if (shouldDelete && shouldMove) {
+  console.error("Error: Cannot use both delete and move options simultaneously");
+  Deno.exit(1);
+}
+
+if (!shouldDelete && !shouldMove) {
+  console.error("Error: Must specify either --delete (-d) or --move (-m)");
+  Deno.exit(1);
+}
+
 // Configuration
 const config: Config = {
   vlcHttpPort: 42339,
@@ -38,4 +63,5 @@ const config: Config = {
   goodFolder: "good",
 };
 
+export { shouldDelete, shouldMove };
 export default config; 

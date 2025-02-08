@@ -48,6 +48,8 @@ The script relies on a configuration file (`config.ts`) to store settings such a
     *   `--allow-net`: Allows network access for interacting with the VLC HTTP interface.
     *   `--allow-read`: Allows reading files to determine their paths.
     *   `--allow-write`: Allows writing files to move them to the "good" folder.
+    *   `--move` or `-m`: Move files to the "good" folder
+    *   `--delete` or `-d`: Delete files instead of moving them
 
 ## Script Components
 
